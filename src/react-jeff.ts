@@ -82,7 +82,8 @@ export interface Field<Val, Err = string> {
  * TODO: Document
  */
 export interface Form<Err = string> {
-	errors: Array<Err>
+	fieldErrors: Array<Err>
+	submitErrors: Array<Err>
 	submitted: boolean
 	focused: boolean
 	touched: boolean
@@ -90,6 +91,7 @@ export interface Form<Err = string> {
 	valid: boolean
 	validating: boolean
 	reset: () => void
+	validateFields: () => Promise<void>
 	props: {
 		onSubmit: SubmitHandler<Err>
 	}
@@ -220,6 +222,7 @@ export function useForm<Err = string>(options: FormOptions<Err>): Form<Err> {
 	let fields = options.fields
 	let onSubmit = options.onSubmit
 	let [submitted, setSubmitted] = React.useState(false)
+	let [submitErrors, setSubmitErrors] = React.useState<Err[]>([])
 
 	let focused = fields.some(field => field.focused)
 	let touched = fields.some(field => field.touched)
@@ -227,7 +230,7 @@ export function useForm<Err = string>(options: FormOptions<Err>): Form<Err> {
 	let valid = fields.every(field => field.valid)
 	let validating = fields.some(field => field.validating)
 
-	let errors = fields.reduce(
+	let fieldErrors = fields.reduce(
 		(errors: Err[], field: Field<any, Err>) => {
 			return errors.concat(field.errors)
 		},
@@ -236,29 +239,34 @@ export function useForm<Err = string>(options: FormOptions<Err>): Form<Err> {
 
 	function reset() {
 		setSubmitted(false)
+		setSubmitErrors([])
 		fields.forEach(field => field.reset())
+	}
+
+	function validateFields() {
+		return Promise.all(fields.map(field => field.validate())).then(() => {})
 	}
 
 	function onSubmitHandler(event: React.FormEvent) {
 		setSubmitted(true)
 
-		let result = onSubmit(event)
-
-		// Promise.resolve()
-		// 	.then(() => result)
-		// 	.then((res: void | Err[]) => {
-		// 		// ...
-		// 	})
+		return Promise.resolve()
+			.then(() => onSubmit(event) as any)
+			.then((errs: void | Err[]) => {
+				setSubmitErrors(errs || [])
+			})
 	}
 
 	return {
-		errors,
+		fieldErrors,
+		submitErrors,
 		submitted,
 		focused,
 		touched,
 		dirty,
 		valid,
 		validating,
+		validateFields,
 		reset,
 		props: {
 			onSubmit: onSubmitHandler,
