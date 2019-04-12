@@ -14,6 +14,7 @@
 		"build": "rm -rf dist && tsc --noEmit && microbundle --no-compress",
 		"prepublish": "npm run build",
 		"test": "ava",
+		"example:build": "parcel build example/index.html --out-dir example-dist",
 		"start": "parcel example/index.html --out-dir example-dist"
 	},
 	"keywords": [
