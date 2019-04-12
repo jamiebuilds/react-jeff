@@ -23,7 +23,7 @@ npm install react-jeff
 import React from "react"
 import { useField, useForm } from "react-jeff"
 
-function isValidUsername(value) {
+function validateUsername(value) {
 	let errs = []
 	if (value.length < 3) errs.push("Must be at least 3 characters long")
 	if (!/^[a-z0-9_-]*$/i.test(value)) errs.push("Must only contain alphanumeric characters or dashes/underscores")
@@ -32,7 +32,7 @@ function isValidUsername(value) {
 	return errs
 }
 
-function isValidPassword(value) {
+function validatePassword(value) {
 	let errs = []
 	if (value.length < 6) errs.push("Must be at least 6 characters long")
 	if (!/[a-z]/.test(value)) errs.push("Must contain at least one lowercase letter")
