@@ -1,6 +1,6 @@
 {
 	"name": "react-jeff",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "A Good Form Library",
 	"main": "dist/react-jeff.js",
 	"types": "dist/react-jeff.d.ts",
