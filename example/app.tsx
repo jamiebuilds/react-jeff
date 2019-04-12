@@ -3,25 +3,32 @@ import { render } from "react-dom"
 import { useForm } from "../src/react-jeff"
 import * as fields from "./fields"
 import { Control } from "./Control"
+import format from "pretty-format"
 
-function TextInput(props) {
-	let { type, onChange, ...rest } = props
+function Form({ onSubmit, ...props }) {
 	return (
-		<input
-			type={type || "text"}
-			onChange={event => onChange(event.currentTarget.value)}
-			{...rest}
+		<form
+			onSubmit={event => {
+				event.preventDefault()
+				onSubmit()
+			}}
+			{...props}
 		/>
 	)
 }
 
-function CheckboxInput(props) {
-	let { onChange, ...rest } = props
+function TextInput({ onChange, ...props }) {
+	return (
+		<input onChange={event => onChange(event.currentTarget.value)} {...props} />
+	)
+}
+
+function CheckboxInput({ onChange, ...props }) {
 	return (
 		<input
 			type="checkbox"
 			onChange={event => onChange(event.currentTarget.checked)}
-			{...rest}
+			{...props}
 		/>
 	)
 }
@@ -33,8 +40,8 @@ function SignupForm() {
 	let confirmPassword = fields.useConfirmPasswordField(password.value)
 	let acceptTerms = fields.useAcceptTermsField()
 
-	function handleSubmit(event) {
-		event.preventDefault()
+	function handleSubmit() {
+		// ...
 	}
 
 	let form = useForm({
@@ -43,14 +50,24 @@ function SignupForm() {
 	})
 
 	return (
-		<form {...form.props}>
+		<Form {...form.props}>
 			<Control form={form} field={email}>
 				<label htmlFor="email">Email</label>
-				<TextInput id="email" placeholder="Email" {...email.props} />
+				<TextInput
+					type="text"
+					id="email"
+					placeholder="Email"
+					{...email.props}
+				/>
 			</Control>
 			<Control form={form} field={username}>
 				<label htmlFor="username">Username</label>
-				<TextInput id="username" placeholder="Username" {...username.props} />
+				<TextInput
+					type="text"
+					id="username"
+					placeholder="Username"
+					{...username.props}
+				/>
 			</Control>
 			<Control form={form} field={password}>
 				<label htmlFor="password">Password</label>
@@ -78,8 +95,13 @@ function SignupForm() {
 				Reset
 			</button>
 			<button type="submit">Sign Up</button>
-			<pre>form = {JSON.stringify(form, null, 2)}</pre>
-		</form>
+			<pre>
+				{"form = "}
+				{format(form, {
+					printFunctionName: false,
+				})}
+			</pre>
+		</Form>
 	)
 }
 
