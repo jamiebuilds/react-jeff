@@ -50,7 +50,7 @@ function LoginForm() {
 		// submit form...
 	}
 
-	let form = useField({
+	let form = useForm({
 		fields: [username, password],
 		onSubmit: onSubmit,
 	})
