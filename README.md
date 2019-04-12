@@ -18,35 +18,60 @@ npm install react-jeff
 
 ## Usage
 
+<!-- prettier-ignore -->
 ```js
 import React from "react"
 import { useField, useForm } from "react-jeff"
 
-function required(value) {
+function isValidUsername(value) {
 	let errs = []
-	if (value === "") errs.push("This field is required!")
+	if (value.length < 3) errs.push("Must be at least 3 characters long")
+	if (!/^[a-z0-9_-]*$/i.test(value)) errs.push("Must only contain alphanumeric characters or dashes/underscores")
+	if (!/^[a-z0-9]/i.test(value)) errs.push("Must start with alphanumeric character")
+	if (!/[a-z0-9]$/i.test(value)) errs.push("Must end with alphanumeric character")
 	return errs
+}
+
+function isValidPassword(value) {
+	let errs = []
+	if (value.length < 6) errs.push("Must be at least 6 characters long")
+	if (!/[a-z]/.test(value)) errs.push("Must contain at least one lowercase letter")
+	if (!/[A-Z]/.test(value)) errs.push("Must contain at least one uppercase letter")
+	if (!/[0-9]/.test(value)) errs.push("Must contain at least one number")
+	return errs
+}
+
+function Form({ onSubmit, ...props }) {
+	return (
+		<form {...props} onSubmit={event => {
+			event.preventDefault()
+			onSubmit()
+		}}/>
+	)
 }
 
 function Input({ onChange, ...props }) {
 	return (
-		<input {...props} onChange={event => onChange(event.currentTarget.value)} />
+		<input {...props} onChange={event => {
+			onChange(event.currentTarget.value)
+		}} />
 	)
 }
 
-function LoginForm() {
+function SignupForm() {
 	let username = useField({
 		defaultValue: "",
-		validations: [required],
+		required: true,
+		validations: [validateUsername],
 	})
 
 	let password = useField({
 		defaultValue: "",
-		validations: [required],
+		required: true,
+		validations: [validatePassword],
 	})
 
-	function onSubmit(event) {
-		event.preventDefault()
+	function onSubmit() {
 		// submit form...
 	}
 
@@ -56,10 +81,11 @@ function LoginForm() {
 	})
 
 	return (
-		<form>
+		<Form {...form.props}>
 			<Input type="text" {...username.props} />
 			<Input type="password" {...password.props} />
-		</form>
+			<button type="submit">Sign Up</button>
+		</Form>
 	)
 }
 ```
