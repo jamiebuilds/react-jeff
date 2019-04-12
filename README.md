@@ -77,7 +77,9 @@ let field = useField({
 	disabled: boolean, // ........... (Optional) Should the field be disabled?
 	readOnly: boolean, // ........... (Optional) Should the field be readOnly?
 })
+```
 
+```js
 field == {
 	value: (value), // ......... The current value of the field.
 	defaultValue: (value), // .. The `defaultValue` passed into `useField({ defaultValue })`.
@@ -127,7 +129,7 @@ let form = useForm({
 ```
 
 ```js
-form = {
+form == {
 	fieldErrors: [(...errors)], // ... The collected errors from all of the fields in the form.
 	submitErrors: [(...errors)], // .. The errors returned by `opts.onSubmit`.
 
