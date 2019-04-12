@@ -1,0 +1,71 @@
+{
+	"name": "react-jeff",
+	"version": "0.0.0",
+	"description": "React Forms done",
+	"main": "dist/react-jeff.js",
+	"types": "dist/react-jeff.d.ts",
+	"source": "src/react-jeff.ts",
+	"amdName": "ReactJeff",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"format": "prettier --write '**/*.{ts,json,html,md}'",
+		"build": "rm -rf dist && tsc --noEmit && microbundle --no-compress",
+		"prepublish": "npm run build",
+		"test": "ava",
+		"start": "parcel example/index.html --out-dir example-dist"
+	},
+	"keywords": [
+		"react",
+		"form",
+		"forms",
+		"hooks",
+		"hook",
+		"final-form",
+		"final",
+		"formik",
+		"library",
+		"simple",
+		"easy",
+		"plain",
+		"async",
+		"validation",
+		"validate",
+		"valid",
+		"dirty",
+		"focused",
+		"touch",
+		"touched"
+	],
+	"author": "Jamie Kyle <me@thejameskyle.com>",
+	"license": "MIT",
+	"peerDependencies": {
+		"react": "^16.8.4"
+	},
+	"devDependencies": {
+		"@types/pretty-format": "^20.0.1",
+		"@types/react": "^16.8.8",
+		"email-regex": "^3.0.0",
+		"husky": "^1.3.1",
+		"lint-staged": "^8.1.5",
+		"microbundle": "^0.11.0",
+		"parcel": "^1.12.1",
+		"prettier": "^1.16.4",
+		"pretty-format": "^24.7.0",
+		"react": "^16.0.0",
+		"react-dom": "^16.8.4",
+		"typescript": "^3.3.3333"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
+	"lint-staged": {
+		"*.{ts,json,md}": [
+			"prettier --write",
+			"git add"
+		]
+	}
+}
