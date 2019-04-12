@@ -221,6 +221,10 @@ export interface Form<Err = string> {
 	 * Validate all of the fields in the form.
 	 */
 	validate: () => Promise<void>
+	/**
+	 * Submit the form manually.
+	 */
+	submit: () => Promise<void>
 
 	/**
 	 * Props to pass into a form component to attach the `form` to it:
@@ -411,6 +415,7 @@ export function useForm<Err = string>(options: FormOptions<Err>): Form<Err> {
 		validating,
 		validate,
 		reset,
+		submit: onSubmitHandler,
 		props: {
 			onSubmit: onSubmitHandler,
 		},

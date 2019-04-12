@@ -144,6 +144,7 @@ form == {
 
 	reset: Function, // .............. Reset all of the fields in the form.
 	validate: Function, // ........... Validate all of the fields in the form.
+	submit: Function, // ............. Submit the form manually.
 
 	// Props to pass into a form component to attach the `form` to it:
 	props: {
