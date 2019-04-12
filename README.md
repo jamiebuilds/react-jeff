@@ -2,6 +2,13 @@
 
 > A Good Form Library
 
+- Easy to learn API
+- Write your form code in a way that is reusable and testable
+- Seamless sync and async form validations (including on form submit)
+- Tons of utilty features out of the box
+- Written with React Hooks
+- Typed with TypeScript
+
 ## Install
 
 ```
