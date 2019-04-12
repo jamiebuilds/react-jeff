@@ -17,6 +17,13 @@ function isReactSyntheticEvent(value: any) {
 	return true
 }
 
+function isEmptyValue(value: any) {
+	if (value === "") return true
+	if (value === null) return true
+	if (typeof value === "undefined") return true
+	return false
+}
+
 /**
  * A function that accepts a value and returns an array of errors. If the array
  * is empty, the value is assumed to be valid. The validation can also return
@@ -40,6 +47,10 @@ export interface FieldOptions<Val, Err = string> {
 	 * Validations to run when the field is `validate()`'d.
 	 */
 	validations?: Array<Validation<Val, Err>>
+	/**
+	 * Should the field be required?
+	 */
+	required?: boolean
 	/**
 	 * Should the field be disabled?
 	 */
@@ -102,6 +113,8 @@ export interface Field<Val, Err = string> {
 	validating: boolean
 	/**
 	 * Is the field currently valid?
+	 *
+	 * Must have no errors, and if the field is required, must not be empty.
 	 */
 	valid: boolean
 	/**
@@ -109,6 +122,10 @@ export interface Field<Val, Err = string> {
 	 */
 	errors: Err[]
 
+	/**
+	 * Is the field required?
+	 */
+	required: boolean
 	/**
 	 * Is the field disabled?
 	 */
@@ -122,6 +139,10 @@ export interface Field<Val, Err = string> {
 	 * Call with a value to manually update the value of the field.
 	 */
 	setValue: (value: Val) => any
+	/**
+	 * Call with true/false to manually set the `required` state of the field.
+	 */
+	setRequired: (required: boolean) => void
 	/**
 	 * Call with true/false to manually set the `disabled` state of the field.
 	 */
@@ -162,6 +183,10 @@ export interface Field<Val, Err = string> {
 		 */
 		onBlur: () => void
 
+		/**
+		 * Should the element be `required`?
+		 */
+		required: boolean
 		/**
 		 * Should the element be `disabled`?
 		 */
@@ -253,6 +278,7 @@ export function useField<Val, Err = string>(
 	let [blurred, setBlurred] = React.useState(false)
 	let [touched, setTouched] = React.useState(false)
 	let [dirty, setDirty] = React.useState(false)
+	let [required, setRequired] = React.useState(options.required || false)
 	let [disabled, setDisabled] = React.useState(options.disabled || false)
 	let [readOnly, setReadOnly] = React.useState(options.readOnly || false)
 
@@ -325,7 +351,7 @@ export function useField<Val, Err = string>(
 		setValueHandler(value)
 	}
 
-	let valid = !errors.length
+	let valid = !errors.length && (required ? !isEmptyValue(value) : true)
 
 	return {
 		value,
@@ -338,14 +364,17 @@ export function useField<Val, Err = string>(
 		dirty,
 		valid,
 		validating,
+		required,
 		disabled,
 		readOnly,
+		setRequired,
 		setDisabled,
 		setReadOnly,
 		reset,
 		validate,
 		props: {
 			value,
+			required,
 			disabled,
 			readOnly,
 			onFocus,

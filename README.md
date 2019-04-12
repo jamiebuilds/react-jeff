@@ -74,6 +74,7 @@ Call `useField()` to create a single field in a form.
 let field = useField({
 	defaultValue: (value), // ....... (Required) The default value of the field.
 	validations: [(...errors)], // .. (Optional) Validations to run when the field is `validate()`'d.
+	required: boolean, // ........... (Optional) Should the field be required?
 	disabled: boolean, // ........... (Optional) Should the field be disabled?
 	readOnly: boolean, // ........... (Optional) Should the field be readOnly?
 })
@@ -90,13 +91,15 @@ field == {
 	blurred: boolean, // ....... Has the element this field is attached to been focused and then blurred?
 
 	validating: boolean, // .... Is the field validating itself?
-	valid: boolean, // ......... Is the field currently valid?
+	valid: boolean, // ......... Is the field currently valid? (must have no errors, and if the field is required, must not be empty)
 	errors: [(...errors)], // .. The collected errors returned by `opts.validations`
 
+	required: boolean, // ...... Is the field required?
 	disabled: boolean, // ...... Is the field disabled?
 	readOnly: boolean, // ...... Is the field readOnly?
 
 	setValue: Function, // ..... Call with a value to manually update the value of the field.
+	setRequired: Function, // .. Call with true/false to manually set the `required` state of the field.
 	setDisabled: Function, // .. Call with true/false to manually set the `disabled` state of the field.
 	setReadOnly: Function, // .. Call with true/false to manually set the `readOnly` state of the field.
 
@@ -111,6 +114,7 @@ field == {
 		onFocus: Function, // .... An `onFocus` handler to update the focused/touched/blurred states of the field.
 		onBlur: Function, // ..... An `onFocus` handler to update the focused/blurred states of the field.
 
+		required: boolean, // .... Should the element be `required`?
 		disabled: boolean, // .... Should the element be `disabled`?
 		readOnly: boolean, // .... Should the element be `readOnly`?
 	},
