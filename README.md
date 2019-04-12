@@ -2,6 +2,7 @@
 
 > A Good Form Library
 
+- ~800 bytes minified+gzip
 - Easy to learn API
 - Write your form code in a way that is reusable and testable
 - Seamless sync and async form validations (including on form submit)
