@@ -166,17 +166,21 @@ export function useField<Val, Err = string>(
 			})
 	}
 
+	let setValueHandler = (value: Val) => {
+		valueRef.current = value
+		setDirty(true)
+		setValue(value)
+		setErrors([])
+		validate()
+	}
+
 	let onChange = (value: Val) => {
 		if (isReactSyntheticEvent(value)) {
 			throw new TypeError(
 				"Expected `field.onChange` to be called with a value, not an event",
 			)
 		}
-		valueRef.current = value
-		setDirty(true)
-		setValue(value)
-		setErrors([])
-		validate()
+		setValueHandler(value)
 	}
 
 	let valid = !errors.length
@@ -185,7 +189,7 @@ export function useField<Val, Err = string>(
 		value,
 		errors,
 		defaultValue,
-		setValue,
+		setValue: setValueHandler,
 		focused,
 		blurred,
 		touched,
