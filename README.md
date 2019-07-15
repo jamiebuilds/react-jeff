@@ -67,7 +67,12 @@ function Input({ onChange, ...props }) {
 	)
 }
 
+/**
+ * 3. Create your form!
+ */
+ 
 function SignupForm() {
+        // Create some fields...
 	let username = useField({
 		defaultValue: "",
 		required: true,
@@ -79,16 +84,19 @@ function SignupForm() {
 		required: true,
 		validations: [validatePassword],
 	})
-
+	
+	// Create your onSubmit handler...
 	function onSubmit() {
-		// submit form...
+		// Do something with the form...
 	}
-
+	
+	// Create your form...
 	let form = useForm({
 		fields: [username, password],
 		onSubmit: onSubmit,
 	})
-
+	
+	// Write your UI!
 	return (
 		<Form {...form.props}>
 			<Input type="text" {...username.props} />
