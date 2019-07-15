@@ -23,6 +23,11 @@ npm install react-jeff
 import React from "react"
 import { useField, useForm } from "react-jeff"
 
+/**
+ * 1. Write some validations that accept an input value and return an array of errors.
+ * (If the array is empty, the value is considered valid)
+ */
+
 function validateUsername(value) {
 	let errs = []
 	if (value.length < 3) errs.push("Must be at least 3 characters long")
@@ -41,10 +46,14 @@ function validatePassword(value) {
 	return errs
 }
 
+/**
+ * 2. Write some custom components that you'll reuse for all of your forms.
+ */
+
 function Form({ onSubmit, ...props }) {
 	return (
 		<form {...props} onSubmit={event => {
-			event.preventDefault()
+			event.preventDefault() // Make sure you call `event.preventDefault()` on your forms!
 			onSubmit()
 		}}/>
 	)
@@ -53,7 +62,7 @@ function Form({ onSubmit, ...props }) {
 function Input({ onChange, ...props }) {
 	return (
 		<input {...props} onChange={event => {
-			onChange(event.currentTarget.value)
+			onChange(event.currentTarget.value) // Make sure all of your inputs call `props.onChange` with the new value.
 		}} />
 	)
 }
