@@ -295,6 +295,7 @@ export function useField<Val, Err = string>(
 	let valueRef = React.useRef<Val>(value)
 
 	function reset() {
+		valueRef.current = defaultValue;
 		setValue(defaultValue)
 		setErrors([])
 		setValidating(false)
